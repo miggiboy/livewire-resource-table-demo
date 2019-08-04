@@ -1,4 +1,6 @@
 <div>
+    <input type="text" wire:model="query">
+
     <div class="table">
         @foreach ($resources as $resource)
             <div class="table-row">

@@ -12,6 +12,7 @@ class ResourceTable extends Component
     public $columns;
     public $offset = 0;
     public $limit = 10;
+    public $query;
 
     public function mount($options)
     {
@@ -36,7 +37,9 @@ class ResourceTable extends Component
 
     public function render()
     {
-        $this->resources = $this->resource::offset($this->offset)->limit($this->limit)->get();
+        $this->resources = $this->resource::when($this->query, function ($query) {
+            $query->resourceSearch($this->query);
+        })->offset($this->offset)->limit($this->limit)->get();
 
         return view('livewire.resource-table');
     }

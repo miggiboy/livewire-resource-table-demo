@@ -30,7 +30,7 @@ class ResourceTableTest extends TestCase
         $this
             ->table([
                 'resource' => 'users',
-                'columns' => [ 'name' => 'name', ]
+                'columns' => [ 'name' => 'name' ]
             ])
             ->assertSee($this->users[0]->name);
     }
@@ -42,7 +42,7 @@ class ResourceTableTest extends TestCase
             $this
                 ->table([
                     'resource' => 'users',
-                    'columns' => [ 'name' => 'name', ]
+                    'columns' => [ 'name' => 'name' ]
                 ])
                 ->assertSee($user->name);
         });
@@ -51,7 +51,7 @@ class ResourceTableTest extends TestCase
             $this
                 ->table([
                     'resource' => 'users',
-                    'columns' => [ 'name' => 'name', ]
+                    'columns' => [ 'name' => 'name' ]
                 ])
                 ->assertDontSee($user->name);
         });
@@ -77,7 +77,7 @@ class ResourceTableTest extends TestCase
         $table = $this
             ->table([
                 'resource' => 'users',
-                'columns' => [ 'name' => 'name', ]
+                'columns' => [ 'name' => 'name' ]
             ]);
 
         // $table->click('[wire:click="next"]'); Why this doesn't work?
@@ -98,7 +98,7 @@ class ResourceTableTest extends TestCase
         $table = $this
             ->table([
                 'resource' => 'users',
-                'columns' => [ 'name' => 'name', ]
+                'columns' => [ 'name' => 'name' ]
             ])
             ->call('next') // 10 - 20
             ->call('next'); // 20 - 30
@@ -120,7 +120,7 @@ class ResourceTableTest extends TestCase
         $table = $this
             ->table([
                 'resource' => 'users',
-                'columns' => [ 'name' => 'name', ]
+                'columns' => [ 'name' => 'name' ]
             ]);
 
         $table->call('next'); // 10 - 20
@@ -146,7 +146,7 @@ class ResourceTableTest extends TestCase
         $table = $this
             ->table([
                 'resource' => 'users',
-                'columns' => [ 'name' => 'name', ]
+                'columns' => [ 'name' => 'name' ]
             ])
             ->call('previous');
 
@@ -159,6 +159,22 @@ class ResourceTableTest extends TestCase
         $this->users->slice(10)->take(10)->each(function ($user) use ($table) {
             $table->assertSee($user->name);
         });
+    }
+
+    /** @test */
+    function results_can_be_filtered_using_search_input()
+    {
+        $this
+            ->table([
+                'resource' => 'users',
+                'columns' => [ 'name' => 'name' ]
+            ])
+            ->assertDontSee($this->users->last()->name)
+            ->set([
+                'query' => $this->users->last()->name
+            ])
+            // ->type('wire:model="query"', $this->users->last()->name) // Why this doesn't work?
+            ->assertSee($this->users->last()->name);
     }
 
     protected function table($options)
