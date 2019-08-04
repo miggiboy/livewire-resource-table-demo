@@ -118,6 +118,27 @@ class ResourceTableTest extends TestCase
         });
     }
 
+    /** @test */
+    function doesnt_do_anything_when_previous_button_is_clicked_and_first_set_of_results_is_displayed()
+    {
+        $table = $this
+            ->table([
+                'resource' => 'users',
+                'columns' => [ 'name' => 'name', ]
+            ])
+            ->call('previous');
+
+        $this->users->take(10)->each(function ($user) use ($table) {
+            $table->assertSee($user->name);
+        });
+
+        $table->call('next');
+
+        $this->users->slice(10)->take(10)->each(function ($user) use ($table) {
+            $table->assertSee($user->name);
+        });
+    }
+
     protected function table($options)
     {
         return Livewire::test(ResourceTable::class, $options);

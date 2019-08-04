@@ -28,6 +28,8 @@ class ResourceTable extends Component
     public function previous()
     {
         $this->offset -= $this->limit;
+
+        $this->offset = max(0, $this->offset);
     }
 
     public function render()
