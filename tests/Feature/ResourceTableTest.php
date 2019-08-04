@@ -177,6 +177,25 @@ class ResourceTableTest extends TestCase
             ->assertSee($this->users->last()->name);
     }
 
+    /** @test */
+    function can_select_per_page_limit()
+    {
+        $table = $this->table([
+            'resource' => 'users',
+            'columns' => [ 'name' => 'name' ]
+        ]);
+
+        $this->users->slice(0)->take(10)->each(function ($user) use ($table) {
+            $table->assertSee($user->name);
+        });
+
+        $table->set([ 'limit' => 20 ]); //has to be replaced with actual dom select tags manipulation
+
+        $this->users->slice(0)->take(20)->each(function ($user) use ($table) {
+            $table->assertSee($user->name);
+        });
+    }
+
     protected function table($options)
     {
         return Livewire::test(ResourceTable::class, $options);

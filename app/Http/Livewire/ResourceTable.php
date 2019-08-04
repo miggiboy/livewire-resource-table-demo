@@ -11,6 +11,7 @@ class ResourceTable extends Component
     public $resources;
     public $columns;
     public $offset = 0;
+    public $limits = [ 10, 25, 50, 100 ];
     public $limit = 10;
     public $query;
 
