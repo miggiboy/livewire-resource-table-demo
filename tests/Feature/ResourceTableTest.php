@@ -28,7 +28,10 @@ class ResourceTableTest extends TestCase
     function can_render_resource_list()
     {
         $this
-            ->table([ 'resource' => 'users' ])
+            ->table([
+                'resource' => 'users',
+                'columns' => [ 'name' => 'name', ]
+            ])
             ->assertSee($this->users[0]->name);
     }
 
@@ -37,14 +40,34 @@ class ResourceTableTest extends TestCase
     {
         $this->users->take(10)->each(function ($user) {
             $this
-                ->table([ 'resource' => 'users' ])
+                ->table([
+                    'resource' => 'users',
+                    'columns' => [ 'name' => 'name', ]
+                ])
                 ->assertSee($user->name);
         });
 
         $this->users->reverse()->take(20)->each(function ($user) {
             $this
-                ->table([ 'resource' => 'users' ])
+                ->table([
+                    'resource' => 'users',
+                    'columns' => [ 'name' => 'name', ]
+                ])
                 ->assertDontSee($user->name);
+        });
+    }
+
+    /** @test */
+    function it_can_render_specific_fields()
+    {
+        $this->users->take(10)->each(function ($user) {
+            $this
+                ->table([
+                    'resource' => 'users',
+                    'columns' => [ 'id' => 'id', 'name' => 'name', ]
+                ])
+                ->assertSee($user->id)
+                ->assertSee($user->name);
         });
     }
 

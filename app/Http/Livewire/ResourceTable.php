@@ -9,10 +9,13 @@ class ResourceTable extends Component
 {
     public $resource;
     public $resources;
+    public $columns;
 
     public function mount($options)
     {
         $this->resource = 'App\\' . Str::studly(Str::singular($options['resource']));
+
+        $this->columns = $options['columns'];
     }
 
     public function render()
