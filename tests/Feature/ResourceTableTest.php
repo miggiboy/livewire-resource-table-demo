@@ -93,6 +93,28 @@ class ResourceTableTest extends TestCase
     }
 
     /** @test */
+    function doesnt_do_anything_when_next_button_is_clicked_if_last_set_of_results_is_being_displayed()
+    {
+        $table = $this
+            ->table([
+                'resource' => 'users',
+                'columns' => [ 'name' => 'name', ]
+            ])
+            ->call('next') // 10 - 20
+            ->call('next'); // 20 - 30
+
+        $this->users->slice(20)->take(10)->each(function ($user) use ($table) {
+            $table->assertSee($user->name);
+        });
+
+        $table->call('next');
+
+        $this->users->slice(20)->take(10)->each(function ($user) use ($table) {
+            $table->assertSee($user->name);
+        });
+    }
+
+    /** @test */
     function it_can_render_previous_set_of_resources_when_previous_button_is_clicked()
     {
         $table = $this
@@ -119,7 +141,7 @@ class ResourceTableTest extends TestCase
     }
 
     /** @test */
-    function doesnt_do_anything_when_previous_button_is_clicked_and_first_set_of_results_is_displayed()
+    function doesnt_do_anything_when_previous_button_is_clicked_if_first_set_of_results_is_displayed()
     {
         $table = $this
             ->table([

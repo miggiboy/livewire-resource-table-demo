@@ -22,7 +22,9 @@ class ResourceTable extends Component
 
     public function next()
     {
-        $this->offset += $this->limit;
+        if ($this->resource::count() > $this->offset) {
+            $this->offset += $this->limit;
+        }
     }
 
     public function previous()
