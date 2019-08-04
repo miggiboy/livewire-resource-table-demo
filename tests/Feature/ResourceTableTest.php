@@ -92,6 +92,32 @@ class ResourceTableTest extends TestCase
         });
     }
 
+    /** @test */
+    function it_can_render_previous_set_of_resources_when_previous_button_is_clicked()
+    {
+        $table = $this
+            ->table([
+                'resource' => 'users',
+                'columns' => [ 'name' => 'name', ]
+            ]);
+
+        $table->call('next'); // 10 - 20
+
+        $this->users->slice(10)->take(10)->each(function ($user) use ($table) {
+            $table->assertSee($user->name);
+        });
+
+        $table->call('previous'); // 0 - 10
+
+        $this->users->slice(10)->take(10)->each(function ($user) use ($table) {
+            $table->assertDontSee($user->name);
+        });
+
+        $this->users->slice(0)->take(10)->each(function ($user) use ($table) {
+            $table->assertSee($user->name);
+        });
+    }
+
     protected function table($options)
     {
         return Livewire::test(ResourceTable::class, $options);

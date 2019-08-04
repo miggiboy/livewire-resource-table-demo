@@ -25,6 +25,11 @@ class ResourceTable extends Component
         $this->offset += $this->limit;
     }
 
+    public function previous()
+    {
+        $this->offset -= $this->limit;
+    }
+
     public function render()
     {
         $this->resources = $this->resource::offset($this->offset)->limit($this->limit)->get();
