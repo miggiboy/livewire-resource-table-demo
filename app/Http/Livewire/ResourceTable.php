@@ -10,6 +10,8 @@ class ResourceTable extends Component
     public $resource;
     public $resources;
     public $columns;
+    public $offset = 0;
+    public $limit = 10;
 
     public function mount($options)
     {
@@ -18,9 +20,14 @@ class ResourceTable extends Component
         $this->columns = $options['columns'];
     }
 
+    public function next()
+    {
+        $this->offset += $this->limit;
+    }
+
     public function render()
     {
-        $this->resources = $this->resource::limit(10)->get();
+        $this->resources = $this->resource::offset($this->offset)->limit($this->limit)->get();
 
         return view('livewire.resource-table');
     }

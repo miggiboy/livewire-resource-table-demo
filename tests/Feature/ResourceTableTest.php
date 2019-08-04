@@ -47,7 +47,7 @@ class ResourceTableTest extends TestCase
                 ->assertSee($user->name);
         });
 
-        $this->users->reverse()->take(20)->each(function ($user) {
+        $this->users->slice(10)->take(20)->each(function ($user) {
             $this
                 ->table([
                     'resource' => 'users',
@@ -68,6 +68,27 @@ class ResourceTableTest extends TestCase
                 ])
                 ->assertSee($user->id)
                 ->assertSee($user->name);
+        });
+    }
+
+    /** @test */
+    function it_can_render_next_set_of_resources_when_next_button_is_clicked()
+    {
+        $table = $this
+            ->table([
+                'resource' => 'users',
+                'columns' => [ 'name' => 'name', ]
+            ]);
+
+        // $table->click('[wire:click="next"]'); Why this doesn't work?
+        $table->call('next');
+
+        $this->users->take(10)->each(function ($user) use ($table) {
+            $table->assertDontSee($user->name);
+        });
+
+        $this->users->slice(10)->take(10)->each(function ($user) use ($table) {
+            $table->assertSee($user->name);
         });
     }
 
