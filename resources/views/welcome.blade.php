@@ -11,8 +11,9 @@
             ]); ?>
         </script>
     </head>
-    <body>
-        {{--  --}}
+    <body class="flex items-center justify-between min-h-screen mb-2">
+        @livewire ('resource-table')
+
         @livewireAssets
     </body>
 </html>
