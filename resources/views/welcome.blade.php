@@ -11,8 +11,17 @@
             ]); ?>
         </script>
     </head>
-    <body class="flex items-center justify-between min-h-screen mb-2">
-        @livewire ('resource-table')
+    <body>
+        <div class="flex w-full items-center justify-center min-h-screen mb-2 px-64" style="background-color: #eff1f4">
+            @livewire ('resource-table', [
+                'resource' => 'users',
+                'columns' => [
+                    'id' => 'id',
+                    'name' => 'name',
+                    'email' => 'email',
+                ]
+            ])
+        </div>
 
         @livewireAssets
     </body>
